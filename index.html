@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edward Jones × Pendomonium 2026</title>
+<style>
+  :root {
+    --pendo-blue: #1B1F5E;
+    --pendo-pink: #FF2D6B;
+    --pendo-teal: #00C2C7;
+    --pendo-light: #F5F7FF;
+    --pendo-gold: #FFB800;
+    --ej-green: #00573C;
+    --white: #ffffff;
+    --gray: #6B7280;
+    --light-gray: #F9FAFB;
+    --border: #E5E7EB;
+    --text: #1F2937;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--pendo-blue); color: var(--text); min-height: 100vh; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--pendo-blue) 0%, #2D3494 50%, #1B1F5E 100%);
+    color: white;
+    text-align: center;
+    padding: 48px 24px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(255,45,107,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0,194,199,0.15) 0%, transparent 50%);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,45,107,0.2); border: 1px solid var(--pendo-pink);
+    border-radius: 999px; padding: 6px 16px; font-size: 12px; font-weight: 600;
+    color: var(--pendo-pink); letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 16px; position: relative;
+  }
+  .hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 800; line-height: 1.1; position: relative; }
+  .hero h1 span { color: var(--pendo-pink); }
+  .hero-sub { font-size: 16px; color: rgba(255,255,255,0.7); margin-top: 8px; position: relative; }
+  .hero-meta { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 20px; position: relative; }
+  .hero-meta-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.85); }
+  .hero-meta-item .icon { font-size: 16px; }
+
+  /* NAV */
+  nav {
+    background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 0 16px; position: sticky; top: 0; z-index: 100;
+    overflow-x: auto; white-space: nowrap;
+  }
+  nav::-webkit-scrollbar { height: 3px; }
+  nav::-webkit-scrollbar-thumb { background: var(--pendo-pink); border-radius: 2px; }
+  .nav-inner { display: inline-flex; gap: 4px; padding: 8px 0; }
+  .nav-btn {
+    background: none; border: none; color: rgba(255,255,255,0.65); cursor: pointer;
+    padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 500;
+    transition: all .2s; white-space: nowrap;
+  }
+  .nav-btn:hover, .nav-btn.active { background: rgba(255,45,107,0.2); color: white; }
+  .nav-btn.active { color: var(--pendo-pink); }
+
+  /* CONTENT */
+  .content { background: var(--light-gray); min-height: calc(100vh - 200px); }
+  .section { display: none; padding: 28px 20px; max-width: 900px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    padding: 24px; margin-bottom: 20px; border: 1px solid var(--border);
+  }
+  .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .card-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+  }
+  .card-icon.blue { background: rgba(27,31,94,0.08); }
+  .card-icon.pink { background: rgba(255,45,107,0.08); }
+  .card-icon.teal { background: rgba(0,194,199,0.08); }
+  .card-icon.green { background: rgba(0,87,60,0.08); }
+  .card-icon.gold { background: rgba(255,184,0,0.08); }
+  .card h2 { font-size: 18px; font-weight: 700; color: var(--pendo-blue); }
+  .card h3 { font-size: 15px; font-weight: 600; color: var(--pendo-blue); margin-bottom: 8px; }
+  .card p, .card li { font-size: 14px; line-height: 1.6; color: #374151; }
+  .card ul { padding-left: 18px; }
+  .card ul li { margin-bottom: 4px; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 22px; font-weight: 800; color: var(--pendo-blue);
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 2px;
+    background: linear-gradient(to right, var(--pendo-pink), transparent);
+  }
+
+  /* HIGHLIGHT BOX */
+  .highlight {
+    background: linear-gradient(135deg, var(--pendo-blue), #2D3494);
+    color: white; border-radius: 16px; padding: 24px; margin-bottom: 20px;
+  }
+  .highlight h2 { color: white; margin-bottom: 8px; }
+  .highlight p { color: rgba(255,255,255,0.85); font-size: 14px; }
+  .highlight a { color: var(--pendo-teal); }
+  .highlight-pink {
+    background: linear-gradient(135deg, var(--pendo-pink), #FF6B9D);
+    color: white; border-radius: 16px; padding: 24px; margin-bottom: 20px;
+  }
+
+  /* TEAM GRID */
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .team-card {
+    background: var(--light-gray); border-radius: 12px; padding: 16px; text-align: center;
+    border: 1px solid var(--border); transition: transform .2s, box-shadow .2s;
+  }
+  .team-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+  .team-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--pendo-blue), var(--pendo-pink));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; margin: 0 auto 10px; color: white; font-weight: 700;
+    overflow: hidden; border: 3px solid var(--border);
+  }
+  .team-avatar img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+  }
+  .team-name { font-size: 14px; font-weight: 700; color: var(--pendo-blue); }
+  .team-role { font-size: 12px; color: var(--gray); margin-bottom: 8px; }
+  .team-contact { font-size: 12px; }
+  .team-contact a { color: var(--pendo-pink); text-decoration: none; }
+
+  /* APP DOWNLOAD */
+  .app-qr {
+    background: linear-gradient(135deg, #1B1F5E, #2D3494);
+    border-radius: 16px; padding: 24px; color: white; text-align: center; margin-bottom: 20px;
+  }
+  .app-btn {
+    display: inline-block; background: var(--pendo-pink); color: white;
+    border-radius: 12px; padding: 14px 28px; font-weight: 700; font-size: 15px;
+    text-decoration: none; margin-top: 16px; transition: opacity .2s;
+  }
+  .app-btn:hover { opacity: .9; }
+
+  /* AGENDA */
+  .day-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .day-tab {
+    padding: 8px 18px; border-radius: 8px; border: 2px solid var(--border);
+    cursor: pointer; font-weight: 600; font-size: 13px; background: white;
+    transition: all .2s; color: var(--gray);
+  }
+  .day-tab.active { background: var(--pendo-blue); color: white; border-color: var(--pendo-blue); }
+  .day-content { display: none; }
+  .day-content.active { display: block; }
+  .time-block {
+    display: flex; gap: 12px; margin-bottom: 12px; padding: 14px;
+    background: white; border-radius: 12px; border: 1px solid var(--border);
+    border-left: 4px solid var(--border);
+  }
+  .time-block.keynote { border-left-color: var(--pendo-blue); background: rgba(27,31,94,0.03); }
+  .time-block.breakout { border-left-color: var(--pendo-teal); }
+  .time-block.social { border-left-color: var(--pendo-gold); background: rgba(255,184,0,0.04); }
+  .time-block.special { border-left-color: var(--pendo-pink); background: rgba(255,45,107,0.04); }
+  .time-block.ej { border-left-color: var(--ej-green); background: rgba(0,87,60,0.04); }
+  .time-label { min-width: 90px; font-size: 12px; font-weight: 700; color: var(--gray); padding-top: 2px; }
+  .time-info { flex: 1; }
+  .time-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .time-desc { font-size: 12px; color: var(--gray); margin-top: 2px; }
+  .time-tag {
+    font-size: 10px; padding: 2px 8px; border-radius: 999px; font-weight: 600;
+    display: inline-block; margin-top: 4px;
+  }
+  .tag-keynote { background: rgba(27,31,94,0.1); color: var(--pendo-blue); }
+  .tag-breakout { background: rgba(0,194,199,0.12); color: #007A7D; }
+  .tag-social { background: rgba(255,184,0,0.15); color: #856500; }
+  .tag-special { background: rgba(255,45,107,0.12); color: #C41D4A; }
+  .tag-ej { background: rgba(0,87,60,0.12); color: var(--ej-green); }
+
+  /* BREAKOUT PICKER */
+  .breakout-section { margin-bottom: 24px; }
+  .breakout-section h3 { font-size: 15px; font-weight: 700; color: var(--pendo-blue); margin-bottom: 12px; border-bottom: 2px solid var(--pendo-pink); padding-bottom: 6px; }
+  .breakout-slot { margin-bottom: 16px; }
+  .slot-label { font-size: 13px; font-weight: 700; color: var(--gray); margin-bottom: 8px; }
+  .breakout-option {
+    background: white; border: 2px solid var(--border); border-radius: 12px;
+    padding: 14px 16px; cursor: pointer; transition: all .2s; margin-bottom: 8px;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .breakout-option:hover { border-color: var(--pendo-teal); }
+  .breakout-option.selected { border-color: var(--pendo-teal); background: rgba(0,194,199,0.04); }
+  .breakout-option.recommended { border-color: var(--pendo-pink); }
+  .breakout-option.recommended.selected { border-color: var(--pendo-pink); background: rgba(255,45,107,0.04); }
+  .option-radio {
+    width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border);
+    flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+  }
+  .breakout-option.selected .option-radio { background: var(--pendo-teal); border-color: var(--pendo-teal); }
+  .breakout-option.recommended.selected .option-radio { background: var(--pendo-pink); border-color: var(--pendo-pink); }
+  .option-radio::after { content: '✓'; color: white; font-size: 11px; display: none; }
+  .breakout-option.selected .option-radio::after { display: block; }
+  .option-title { font-size: 14px; font-weight: 600; color: var(--text); }
+  .option-desc { font-size: 12px; color: var(--gray); margin-top: 2px; }
+  .rec-badge { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,45,107,0.1); color: var(--pendo-pink); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-top: 4px; }
+  .closed-note { font-size: 11px; font-weight: 600; color: #B45309; background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 6px; padding: 3px 8px; display: inline-block; margin-top: 6px; }
+  .closed-breakout { opacity: 0.6; cursor: default; pointer-events: none; }
+
+  /* PERSONALIZED AGENDA */
+  .my-agenda-empty { text-align: center; padding: 32px; color: var(--gray); font-size: 14px; }
+  .agenda-item {
+    background: white; border-radius: 12px; border: 1px solid var(--border);
+    border-left: 4px solid var(--pendo-blue);
+    padding: 14px 16px; margin-bottom: 10px;
+  }
+  .agenda-item.breakout { border-left-color: var(--pendo-teal); }
+  .agenda-item.special { border-left-color: var(--pendo-pink); }
+  .agenda-item.ej { border-left-color: var(--ej-green); }
+  .agenda-day-header {
+    font-size: 13px; font-weight: 800; color: var(--pendo-blue); text-transform: uppercase;
+    letter-spacing: 1px; padding: 8px 0 4px; border-bottom: 1px solid var(--border); margin-bottom: 10px;
+  }
+
+  /* WEATHER */
+  .weather-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .weather-day {
+    background: white; border-radius: 12px; padding: 14px 10px; text-align: center;
+    border: 1px solid var(--border);
+  }
+  .weather-date { font-size: 11px; font-weight: 700; color: var(--gray); text-transform: uppercase; }
+  .weather-icon { font-size: 28px; margin: 6px 0; }
+  .weather-high { font-size: 20px; font-weight: 800; color: var(--pendo-blue); }
+  .weather-low { font-size: 13px; color: var(--gray); }
+  .weather-note { font-size: 11px; color: var(--gray); margin-top: 4px; }
+
+  /* LOGISTICS */
+  .route-card {
+    background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .route-step {
+    display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px;
+  }
+  .route-dot {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+  }
+  .step-line {
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .route-connector { width: 2px; height: 20px; background: var(--border); margin-left: 15px; }
+
+  /* EXPLORE / RALEIGH */
+  .explore-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+  .explore-card {
+    background: white; border-radius: 14px; padding: 20px;
+    border: 1px solid var(--border); transition: transform .2s;
+  }
+  .explore-card:hover { transform: translateY(-2px); }
+  .explore-emoji { font-size: 28px; margin-bottom: 10px; }
+  .explore-title { font-size: 15px; font-weight: 700; color: var(--pendo-blue); margin-bottom: 8px; }
+  .explore-items { list-style: none; padding: 0; }
+  .explore-items li { font-size: 13px; color: #374151; padding: 4px 0; border-bottom: 1px solid var(--border); }
+  .explore-items li:last-child { border-bottom: none; }
+  .explore-items li::before { content: '→ '; color: var(--pendo-pink); }
+
+  /* FOOD MENU */
+  .menu-day { margin-bottom: 24px; }
+  .menu-meal { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .menu-meal-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .meal-type { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .menu-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .menu-item:last-child { border-bottom: none; }
+  .menu-item-name { color: var(--text); }
+  .menu-item-detail { color: var(--gray); font-size: 12px; }
+  .diet-badge { font-size: 10px; padding: 2px 6px; border-radius: 999px; }
+  .gf { background: #FEF3C7; color: #92400E; }
+  .vg { background: #D1FAE5; color: #065F46; }
+  .vegan { background: #ECFDF5; color: #047857; }
+
+  /* EXEC RECEPTION */
+  .exec-card {
+    background: linear-gradient(135deg, #1a0533, #2D1B69);
+    border-radius: 16px; padding: 28px; color: white; margin-bottom: 20px;
+    border: 1px solid rgba(255,45,107,0.3);
+  }
+  .exec-card h2 { color: white; font-size: 22px; margin-bottom: 4px; }
+  .exec-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--pendo-pink); color: white; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; margin-bottom: 12px; }
+  .exec-detail { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 14px; }
+  .exec-detail-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: rgba(255,255,255,0.85); }
+
+  /* KNOW BEFORE YOU GO */
+  .kbyg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .kbyg-item {
+    background: white; border-radius: 12px; padding: 16px; border: 1px solid var(--border);
+  }
+  .kbyg-emoji { font-size: 24px; margin-bottom: 6px; }
+  .kbyg-title { font-size: 13px; font-weight: 700; color: var(--pendo-blue); margin-bottom: 4px; }
+  .kbyg-text { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+  /* RECOMMENDED SESSIONS */
+  .rec-session {
+    background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px;
+    border: 1px solid var(--border); border-left: 4px solid var(--pendo-pink);
+  }
+  .rec-session h4 { font-size: 14px; font-weight: 700; color: var(--pendo-blue); margin-bottom: 4px; }
+  .rec-session p { font-size: 13px; color: var(--gray); }
+  .rec-session a { color: var(--pendo-pink); font-size: 12px; text-decoration: none; }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 20px; border-radius: 10px; font-weight: 600; font-size: 13px;
+    cursor: pointer; border: none; transition: all .2s; text-decoration: none;
+  }
+  .btn-primary { background: var(--pendo-blue); color: white; }
+  .btn-primary:hover { background: #2D3494; }
+  .btn-pink { background: var(--pendo-pink); color: white; }
+  .btn-pink:hover { opacity: 0.9; }
+  .btn-outline { background: white; color: var(--pendo-blue); border: 2px solid var(--pendo-blue); }
+
+  /* INFO ROW */
+  .info-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; }
+  .info-row .label { font-weight: 600; color: var(--pendo-blue); min-width: 100px; }
+  .info-row .val { color: #374151; }
+
+  /* CHIPS */
+  .chip { display: inline-block; background: rgba(27,31,94,0.07); color: var(--pendo-blue); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; margin: 2px; }
+
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  a { color: var(--pendo-blue); }
+  .text-pink { color: var(--pendo-pink); }
+  .text-teal { color: var(--pendo-teal); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 32px 16px 24px; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .explore-grid { grid-template-columns: 1fr; }
+    .weather-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🎉 Your Personalized Event Guide</div>
+  <h1>Edward Jones <span>×</span> Pendomonium 2026</h1>
+  <p class="hero-sub">March 24–26 · Raleigh, NC · Hosted by Pendo</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><span class="icon">📍</span> <a href="https://google.com/maps?rlz=1C5GCCM_en&um=1&ie=UTF-8&fb=1&gl=us&sa=X&geocode=KWNdNcmQWKyJMRIhoqE96dW6&daddr=2+E+South+St,+Raleigh,+NC+27601" target="_blank" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-underline-offset:3px;">Martin Marietta Center for the Performing Arts ↗</a></div>
+    <div class="hero-meta-item"><span class="icon">🏨</span> <a href="https://www.google.com/maps?rlz=1C5GCCM_en&um=1&ie=UTF-8&fb=1&gl=us&sa=X&geocode=KUXQBFhxX6yJMeparyWcEBL1&daddr=500+Fayetteville+St,+Raleigh,+NC+27601" target="_blank" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-underline-offset:3px;">Raleigh Marriott City Center ↗</a></div>
+    <div class="hero-meta-item"><span class="icon">✈️</span> <a href="https://www.google.com/maps?rlz=1C5GCCM_en&gs_lcrp=EgZjaHJvbWUyEggAEEUYORiDARjjAhixAxiABDITCAEQLhiDARivARjHARixAxiABDIGCAIQRRg7MgYIAxBFGDsyBwgEEAAYgAQyBwgFEAAYgAQyEAgGEAAYgwEYsQMYgAQYigUyBggHEEUYPdIBBzU2NmowajSoAgCwAgA&um=1&ie=UTF-8&fb=1&gl=us&sa=X&geocode=Kc95jgL68KyJMe1180HSkoPj&daddr=2400+John+Brantley+Blvd,+Morrisville,+NC+27560" target="_blank" style="color:rgba(255,255,255,0.85);text-decoration:underline;text-underline-offset:3px;">Arriving Sun 3/22 · Departing Fri 3/27 ↗</a></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showSection('welcome')">👋 Welcome</button>
+    <button class="nav-btn" onclick="showSection('app')">📱 Event App</button>
+    <button class="nav-btn" onclick="showSection('team')">👥 Your Pendo Account Team</button>
+    <button class="nav-btn" onclick="showSection('exec')">🌟 Welcome Reception</button>
+    <button class="nav-btn" onclick="showSection('ebc')">🤝 EBC Meeting</button>
+    <button class="nav-btn" onclick="showSection('agenda')">📅 Full Agenda</button>
+    <button class="nav-btn" onclick="showSection('my-agenda')">⭐ My Agenda</button>
+    <button class="nav-btn" onclick="showSection('recommended')">🎯 Recommended</button>
+    <button class="nav-btn" onclick="showSection('logistics')">🚗 Travel</button>
+    <button class="nav-btn" onclick="showSection('kbyg')">📋 Know Before You Go</button>
+    <button class="nav-btn" onclick="showSection('raleigh')">🏙️ Explore Raleigh</button>
+    <button class="nav-btn" onclick="showSection('food')">🍽️ Food Menus</button>
+    <button class="nav-btn" onclick="showSection('weather')">🌤️ Weather</button>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- WELCOME -->
+  <div id="section-welcome" class="section active">
+    <div class="section-title">Welcome, Edward Jones! 🎉</div>
+    <div class="highlight">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span style="font-size:28px">🚀</span>
+        <h2 style="font-size:20px">You're Headed to Pendomonium 2026!</h2>
+      </div>
+      <p>We are so thrilled to have you joining us at Pendomonium — Pendo's annual flagship conference bringing together the world's top product, UX, engineering, and CS leaders. This booklet is your personalized guide to make the most of the event.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon pink">📅</div>
+        <h2>Trip at a Glance</h2>
+      </div>
+      <div class="info-row"><span class="label">Arrival</span><span class="val">☀️ Sunday, March 22 &amp; Monday, March 23</span></div>
+      <div class="info-row"><span class="label">Event Days</span><span class="val">🎤 Tuesday, March 24 – Thursday, March 26</span></div>
+      <div class="info-row"><span class="label">Departure</span><span class="val">✈️ Friday, March 27 at 6:00 AM from RDU</span></div>
+      <div class="divider"></div>
+      <div class="info-row"><span class="label">Hotel</span><span class="val">Raleigh Marriott City Center · 500 Fayetteville St, Raleigh, NC 27601</span></div>
+      <div class="info-row"><span class="label">Venue</span><span class="val">Martin Marietta Center for the Performing Arts · 2 East South Street, Raleigh, NC 27601</span></div>
+      <div class="info-row"><span class="label">Hotel → Venue</span><span class="val">🚶 ~5 minute walk!</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon blue">⭐</div>
+        <h2>Highlights to Look Forward To</h2>
+      </div>
+      <ul>
+        <li><strong>🎉 Exclusive Exec Reception</strong> — Tuesday, March 24, 6–9 PM at Pendo HQ (see Exec Reception tab!)</li>
+        <li><strong>🎸 BBQ &amp; Beats</strong> — Wednesday evening featuring Gangstagrass &amp; Fireside Collective</li>
+        <li><strong>🎤 Opening Keynote</strong> — Wednesday, 9–11 AM with Pendo CEO Todd Olson</li>
+        <li><strong>🤝 EBC Meeting</strong> — Thursday, 3:20–3:50 PM with Pendo leadership (AI Agents &amp; MS Teams)</li>
+        <li><strong>🎵 Pendopalooza After Party</strong> — Thursday night featuring OK Go live!</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="section-app" class="section">
+    <div class="section-title">📱 Download the Event App</div>
+    <div class="app-qr">
+      <div style="font-size:40px;margin-bottom:12px;">📱</div>
+      <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Get the Pendomonium App</h2>
+      <p style="color:rgba(255,255,255,0.8);font-size:14px;margin-bottom:4px;">Access the full agenda, session details, speaker bios, venue maps, and real-time updates — all in one place.</p>
+      <a class="app-btn" href="https://yzho.app.link/oV8fb86zf0b?eventId=57d9248a-1fc9-4004-8a54-4c2618fe545b&feature=openEvent&environment=production&_p=c71729c09d017af4e40387f5" target="_blank">📲 Tap to Download the App</a>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon teal">✅</div>
+        <h2>What's Inside the App</h2>
+      </div>
+      <ul>
+        <li>📅 Full agenda with session details and speaker bios</li>
+        <li>🗺️ Interactive venue map — the venue is half indoor, half outdoor!</li>
+        <li>🔔 Real-time notifications for schedule changes</li>
+        <li>👤 Connect with other attendees</li>
+        <li>📝 Build your personal session schedule</li>
+        <li>💬 Ask questions during sessions</li>
+      </ul>
+      <div class="divider"></div>
+      <p style="font-size:13px;color:var(--gray);">💡 <strong>Tip:</strong> Download the app before you land in Raleigh and log in with the email you registered with. Enable push notifications so you never miss a session change!</p>
+    </div>
+  </div>
+
+  <!-- TEAM -->
+  <div id="section-team" class="section">
+    <div class="section-title">👥 Your Pendo Account Team</div>
+
+    <div class="highlight-pink">
+      <h2 style="font-size:18px;font-weight:800;color:white;margin-bottom:8px;">We're Here For You! 💚</h2>
+      <p style="color:rgba(255,255,255,0.9);font-size:14px;">We're excited to be at Pendomonium alongside you! Here's what we'd love to do together:</p>
+      <ul style="color:rgba(255,255,255,0.9);font-size:14px;padding-left:18px;margin-top:8px;">
+        <li>☕ Grab coffee together before sessions</li>
+        <li>🎤 Join breakout sessions side-by-side</li>
+        <li>🥂 Connect at the Welcome Reception at HQ on Tuesday night</li>
+        <li>🗓️ Set aside time for working sessions on your specific priorities</li>
+        <li>💬 We'll kick off a <strong>group text chat</strong> so we can stay in touch throughout the conference — watch for a message!</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon blue">👋</div>
+        <h2>Find Your Team at the Event</h2>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">VM</div>
+          <div class="team-name">Vaughn Maxson</div>
+          <div class="team-role">Manager, Customer Experience</div>
+          <div class="team-contact">
+            <a href="mailto:vaughn.maxon@pendo.io">vaughn.maxon@pendo.io</a><br>
+            <a href="tel:4042266022">404-226-6022</a><br>
+            <a href="https://www.linkedin.com/in/vmaxson/" target="_blank">LinkedIn ↗</a>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">CS</div>
+          <div class="team-name">Cassie Sweet</div>
+          <div class="team-role">Account Director</div>
+          <div class="team-contact">
+            <a href="mailto:cassie.sweet@pendo.io">cassie.sweet@pendo.io</a><br>
+            <a href="tel:5402728260">540-272-8260</a><br>
+            <a href="https://www.linkedin.com/in/cassielbell/" target="_blank">LinkedIn ↗</a>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">LM</div>
+          <div class="team-name">Lauren Mazzola</div>
+          <div class="team-role">Customer Success Manager</div>
+          <div class="team-contact">
+            <a href="mailto:lauren.mazzola@pendo.io">lauren.mazzola@pendo.io</a><br>
+            <a href="tel:5083144012">508-314-4012</a><br>
+            <a href="https://www.linkedin.com/in/lmaz/" target="_blank">LinkedIn ↗</a>
+          </div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">CE</div>
+          <div class="team-name">Caitlin Edberg</div>
+          <div class="team-role">Senior TAM</div>
+          <div class="team-contact">
+            <a href="mailto:caitlin.edberg@pendo.io">caitlin.edberg@pendo.io</a><br>
+            <a href="tel:8045149477">804-514-9477</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXEC RECEPTION -->
+  <div id="section-exec" class="section">
+    <div class="section-title">🌟 Exclusive Exec Welcome Reception</div>
+
+    <div class="exec-card">
+      <div class="exec-badge">🎟️ You're Invited — Exclusive Access</div>
+      <h2>Opening Executive Reception &amp; Dinner</h2>
+      <p style="color:rgba(255,255,255,0.75);font-size:13px;margin-bottom:14px;">Kicks off Pendomonium 2026 — a private evening for top executives</p>
+      <div class="exec-detail">
+        <div class="exec-detail-item">📅 <span>Tuesday, March 24, 2026</span></div>
+        <div class="exec-detail-item">🕕 <span>6:00 PM – 9:00 PM ET</span></div>
+        <div class="exec-detail-item">📍 <a href="https://www.google.com/maps?rlz=1C5GCCM_en&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg9MgYIAhBFGDwyBggDEEUYPDIGCAQQRRhAMgYIBRBFGEAyBggGEEUYQNIBCDI0OTFqMGo3qAIAsAIA&um=1&ie=UTF-8&fb=1&gl=us&sa=X&geocode=KRXLkBxyX6yJMaWi7GJX8zXl&daddr=301+Hillsborough+St,+Raleigh,+NC+27603" target="_blank" style="color:var(--pendo-teal);text-decoration:none;">📍 Pendo HQ — 301 Hillsborough St, Raleigh, NC 27603 ↗</a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon gold">🥂</div>
+        <h2>What to Expect</h2>
+      </div>
+      <ul>
+        <li>🎶 <strong>Live band</strong> — setting the perfect atmosphere for the evening</li>
+        <li>🍽️ <strong>Dinner &amp; drinks</strong> — an elegant seated experience with curated menu</li>
+        <li>🤝 <strong>Exclusive networking</strong> with executive-level product leaders, Pendo leadership, and top customers</li>
+        <li>🎤 <strong>Executive conversations</strong> — hear directly from Pendo's leadership team</li>
+        <li>💡 <strong>Early access</strong> to themes and highlights from the main conference days ahead</li>
+      </ul>
+      <div class="divider"></div>
+      <p style="font-size:13px;color:var(--gray);margin-top:6px;">📍 <strong>Location:</strong> <a href="https://www.google.com/maps?rlz=1C5GCCM_en&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQRRg9MgYIAhBFGDwyBggDEEUYPDIGCAQQRRhAMgYIBRBFGEAyBggGEEUYQNIBCDI0OTFqMGo3qAIAsAIA&um=1&ie=UTF-8&fb=1&gl=us&sa=X&geocode=KRXLkBxyX6yJMaWi7GJX8zXl&daddr=301+Hillsborough+St,+Raleigh,+NC+27603" target="_blank">Pendo Headquarters — 301 Hillsborough St, Raleigh, NC 27603 ↗</a></p>
+      <p style="font-size:13px;color:var(--gray);margin-top:6px;">🚗 <strong>Getting there:</strong> Your Pendo account team will coordinate logistics! Watch the group text for details.</p>
+      <div class="divider"></div>
+      <a href="https://events.pendo.io/pndm26-exec-welcome-reception" target="_blank" class="btn btn-primary" style="margin-top:4px;">🔗 View Reception Details</a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon pink">🌟</div>
+        <h2>Why This Matters</h2>
+      </div>
+      <p>This reception is <strong>by invitation only</strong> — we secured your access because we value our partnership with Edward Jones and want to ensure you have the highest-quality connections at the event. This is the perfect opportunity to kick off the conference on a high note and connect with Pendo's executive leadership before the busy main days begin.</p>
+    </div>
+  </div>
+
+  <!-- FULL AGENDA -->
+  <div id="section-agenda" class="section">
+    <div class="section-title">📅 Full Conference Agenda</div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:16px;">Select your preferred breakout sessions below. Your choices will appear in your <strong>personalized agenda</strong> on the ⭐ My Agenda tab.</p>
+
+    <div class="day-tabs">
+      <button class="day-tab active" onclick="showDay('day0')">Tue 3/24 — Day 0</button>
+      <button class="day-tab" onclick="showDay('day1')">Wed 3/25 — Day 1</button>
+      <button class="day-tab" onclick="showDay('day2')">Thu 3/26 — Day 2</button>
+    </div>
+
+    <!-- DAY 0: March 24 -->
+    <div id="day0" class="day-content active">
+      <div style="background:rgba(255,45,107,0.07);border-radius:12px;padding:12px 16px;margin-bottom:16px;border:1px solid rgba(255,45,107,0.2);">
+        <p style="font-size:13px;color:var(--pendo-pink);font-weight:700;">🌟 Tonight: Exclusive Exec Reception 6–9 PM at Pendo HQ — You're invited!</p>
+      </div>
+      <div class="time-block keynote">
+        <div class="time-label">9:00 AM</div>
+        <div class="time-info"><div class="time-title">Registration Opens</div><span class="time-tag tag-keynote">All Day</span><div class="closed-note">⚠️ Pre-event registration required — registration is now closed</div></div>
+      </div>
+      <div class="time-block keynote">
+        <div class="time-label">10:00 AM</div>
+        <div class="time-info"><div class="time-title">Stop "Using" Pendo & Start Leading With It</div><div class="time-desc">Liz Feller, IT Manager @ Nelnet Business Services — Connector Track Welcome Keynote</div><span class="time-tag tag-keynote">Keynote</span><div class="closed-note">⚠️ Pre-event registration required — registration is now closed</div></div>
+      </div>
+
+      <div class="breakout-section">
+        <h3>🔀 10:30 AM — Choose Your Session</h3>
+        <div class="breakout-option recommended closed-breakout" id="d0s1a">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Scaling Pendo at UserTesting: Governance, adoption, and measurable impact</div>
+            <div class="option-desc">UserTesting leaders share how they scaled Pendo, built a COE, and drove consistent in-app experiences.</div>
+            <span class="rec-badge">⭐ Recommended for You</span>
+          </div>
+        </div>
+        <div class="breakout-option closed-breakout" id="d0s1b">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Lightning Round: Pendo Admin Playbooks</div>
+            <div class="option-desc">Tips and processes for Pendo admins from four expert practitioners.</div>
+            <div class="closed-note">⚠️ Pre-event registration required — registration is now closed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="time-block">
+        <div class="time-label">12:15 PM</div>
+        <div class="time-info"><div class="time-title">Lunch &amp; Networking</div><div class="closed-note">⚠️ Pre-event registration required — registration is now closed</div></div>
+      </div>
+      <div class="time-block breakout">
+        <div class="time-label">1:30 PM</div>
+        <div class="time-info"><div class="time-title">Connect with Product &amp; Community</div><div class="time-desc">Visit the Product Experience Zone and Community Hall</div><span class="time-tag tag-breakout">Recommended</span><div class="closed-note">⚠️ Pre-event registration required — registration is now closed</div></div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">2:30 PM</div>
+        <div class="time-info"><div class="time-title">Roundtable Discussions</div><div class="closed-note">⚠️ Pre-event registration required — registration is now closed</div></div>
+      </div>
+      <div class="time-block social">
+        <div class="time-label">4:00 PM</div>
+        <div class="time-info"><div class="time-title">Customer Awards Ceremony</div><div class="time-desc">Recognizing customers and partners setting the standard for what's possible with Pendo</div><span class="time-tag tag-social">Don't Miss</span><div class="closed-note">⚠️ Pre-event registration required — registration is now closed</div></div>
+      </div>
+      <div class="time-block social">
+        <div class="time-label">5:00 PM</div>
+        <div class="time-info"><div class="time-title">VIP Reception</div><span class="time-tag tag-social">Networking</span><div class="closed-note">⚠️ Pre-event registration required — registration is now closed</div></div>
+      </div>
+      <div class="time-block special">
+        <div class="time-label">6:00 PM</div>
+        <div class="time-info"><div class="time-title">⭐ EXCLUSIVE: Exec Welcome Reception at Pendo HQ</div><div class="time-desc">Dinner · Drinks · Live Band · Executive Networking — 6:00–9:00 PM</div><span class="time-tag tag-special">Your Exclusive Event</span></div>
+      </div>
+    </div>
+
+    <!-- DAY 1: March 25 -->
+    <div id="day1" class="day-content">
+      <div class="time-block">
+        <div class="time-label">7:00 AM</div>
+        <div class="time-info"><div class="time-title">Breakfast &amp; Networking</div></div>
+      </div>
+      <div class="time-block keynote">
+        <div class="time-label">9:00 AM</div>
+        <div class="time-info">
+          <div class="time-title">Opening Keynote: Built by You, Powered by Pendo</div>
+          <div class="time-desc">Todd Olson, Co-founder &amp; CEO @ Pendo — Vision for the future, customer achievements, and what's next</div>
+          <span class="time-tag tag-keynote">⭐ Don't Miss</span>
+        </div>
+      </div>
+      <div class="time-block">
+        <div class="time-label">11:00 AM</div>
+        <div class="time-info"><div class="time-title">Lunch &amp; Networking</div></div>
+      </div>
+
+      <div class="breakout-section">
+        <h3>🔀 12:00 PM — Choose a Breakout</h3>
+        <div class="breakout-option" id="d1s1a" onclick="selectBreakout('d1s1','a','Shipping AI Agents Without Risk','12:00–12:30 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Shipping AI Agents, Without Shipping Risk</div>
+            <div class="option-desc">Security and governance challenges when shipping customer-facing AI agents — Gil Feig, CTO @ Merge</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d1s1b" onclick="selectBreakout('d1s1','b','From Prototype to Production','12:30–1:00 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">From Prototype to Production: Building the Right Thing</div>
+            <div class="option-desc">As AI makes building cheaper than ever, the risk shifts from "can we?" to "should we?" — Chelsea Bullock, Atlassian</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="breakout-section">
+        <h3>🔀 1:00 PM — Choose a Breakout</h3>
+        <div class="breakout-option" id="d1s2a" onclick="selectBreakout('d1s2','a','Making Product Decisions That Survive Scrutiny','1:00–1:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Making Product Decisions That Survive Scrutiny</div>
+            <div class="option-desc">How to break the cycle of reactive firefighting in B2B2C environments — CCC Intelligent Solutions</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d1s2b" onclick="selectBreakout('d1s2','b','Delightful Intelligence: How to Create AI Products Users Love','1:00–1:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Delightful Intelligence: How to Create AI Products Users Love</div>
+            <div class="option-desc">Framework for building AI experiences users truly love — from co-authors of O'Reilly's Delightful Intelligence</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d1s2c" onclick="selectBreakout('d1s2','c','Anticipating Customer Needs with Predictive Analytics','1:00–1:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Anticipating Customer Needs &amp; Driving Retention with Predictive Analytics</div>
+            <div class="option-desc">How Emburse unified NPS, health, and digital renewal workflows into one journey — Emburse &amp; Pendo</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d1s2d" onclick="selectBreakout('d1s2','d','Lightning Round: Turning Dashboards into Dollars','1:00–1:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Lightning Round: Turning Dashboards into Dollars</div>
+            <div class="option-desc">Impact of accessible analytics on revenue — WGU, The Palace Company, Okta</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="breakout-section">
+        <h3>🔀 2:00 PM — Choose a Breakout</h3>
+        <div class="breakout-option recommended" id="d1s3a" onclick="selectBreakout('d1s3','a','From Foundations to Dynamism: Preparing for Agent-First Experiences','2:00–2:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">From Foundations to Dynamism: Preparing for Agent-First Experiences</div>
+            <div class="option-desc">IQVIA's approach to building the fundamentals for AI agent-first experiences at scale</div>
+            <span class="rec-badge">⭐ Recommended for You</span>
+          </div>
+        </div>
+        <div class="breakout-option" id="d1s3b" onclick="selectBreakout('d1s3','b','How to Build a Repeatable AI Framework Across the Product Lifecycle','2:00–2:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">How to Build a Repeatable AI Framework Across the Product Lifecycle</div>
+            <div class="option-desc">Moving from AI experiments to an operationalized framework — EBANX</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d1s3c" onclick="selectBreakout('d1s3','c','The Team of Tomorrow: Agents, Alignment, and Team Ritual','2:00–2:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">The Team of Tomorrow: Agents, Alignment, and Team Ritual</div>
+            <div class="option-desc">Design fiction exploring a near future where AI agents work alongside product teams — GitHub</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d1s3d" onclick="selectBreakout('d1s3','d','Predicting Adoption, Trust, and Risk with Behavioral Data','2:00–2:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Predicting Adoption, Trust, and Risk with Behavioral Data</div>
+            <div class="option-desc">Moving beyond surface analytics to signals that predict adoption and trust — Trellix</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="breakout-section">
+        <h3>🔀 3:00 PM — Choose a Breakout</h3>
+        <div class="breakout-option" id="d1s4a" onclick="selectBreakout('d1s4','a','Lightning Round: Proving ROI from Apps to AI Agents','3:00–3:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Lightning Round: Proving ROI, from Apps to AI Agents</div>
+            <div class="option-desc">Deploying and measuring agents — Salesforce, Pendo, and Nexxen</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d1s4b" onclick="selectBreakout('d1s4','b','Lightning Round: Building with AI from Architecture to Execution','3:00–3:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Lightning Round: Building with AI, from Architecture to Execution</div>
+            <div class="option-desc">ServiceNow and Symplr cover building with AI from start to finish</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d1s4c" onclick="selectBreakout('d1s4','c','How Global Payments Rebuilt User Trust After a Launch Gone Wrong','3:00–3:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">How Global Payments Rebuilt User Trust After a Product Launch Gone Wrong</div>
+            <div class="option-desc">Honest story of recovering from a difficult NextGen POS launch — Global Payments</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d1s4d" onclick="selectBreakout('d1s4','d','Lightning Round: In-App Onboarding with an AI-First Mindset','3:00–3:45 PM','Wed 3/25')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Lightning Round: In-App Onboarding with an AI-First Mindset</div>
+            <div class="option-desc">New AI-powered onboarding approaches — Verizon Connect and RF-SMART</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="time-block keynote">
+        <div class="time-label">4:00 PM</div>
+        <div class="time-info">
+          <div class="time-title">MCP: The Connective Tissue Behind a New Generation of Builders</div>
+          <div class="time-desc">Panel: Rahul Jain (CPO, Pendo), ThoughtSpot, Miro, Atlassian, Cohley — How PMs can prototype with MCP</div>
+          <span class="time-tag tag-keynote">⭐ Recommended</span>
+        </div>
+      </div>
+      <div class="time-block keynote">
+        <div class="time-label">5:00 PM</div>
+        <div class="time-info">
+          <div class="time-title">How Builder.io Builds: Inside the Workflows of AI-Native Companies</div>
+          <div class="time-desc">Steve Sewell, Founder &amp; CEO @ Builder.io</div>
+          <span class="time-tag tag-keynote">Keynote</span>
+        </div>
+      </div>
+      <div class="time-block social">
+        <div class="time-label">5:30 PM</div>
+        <div class="time-info">
+          <div class="time-title">🎉 BBQ &amp; Beats</div>
+          <div class="time-desc">Local NC BBQ + live music from Gangstagrass &amp; Fireside Collective!</div>
+          <span class="time-tag tag-social">🔥 Don't Miss</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 2: March 26 -->
+    <div id="day2" class="day-content">
+      <div class="time-block">
+        <div class="time-label">7:00 AM</div>
+        <div class="time-info"><div class="time-title">Breakfast &amp; Networking</div></div>
+      </div>
+      <div class="time-block keynote">
+        <div class="time-label">9:00 AM</div>
+        <div class="time-info">
+          <div class="time-title">The Era of the Product Creator</div>
+          <div class="time-desc">Christian Idiodi, Partner @ Silicon Valley Product Group — How AI is changing product roles</div>
+          <span class="time-tag tag-keynote">Keynote</span>
+        </div>
+      </div>
+      <div class="time-block keynote">
+        <div class="time-label">9:45 AM</div>
+        <div class="time-info">
+          <div class="time-title">The Art and Science of Product Sense</div>
+          <div class="time-desc">Vrushali Paunikar, CPO @ Carta — Turning product sense into a repeatable discipline</div>
+          <span class="time-tag tag-keynote">Keynote</span>
+        </div>
+      </div>
+
+      <div class="breakout-section">
+        <h3>🔀 10:30 AM — Choose a Breakout</h3>
+        <div class="breakout-option recommended" id="d2s1a" onclick="selectBreakout('d2s1','a','Measuring the Performance and Impact of AI Agents, at Scale','10:30–11:15 AM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Measuring the Performance and Impact of AI Agents, at Scale</div>
+            <div class="option-desc">Can you prove how well your AI investments are working? — Brian Walsh (SVP Product, Pendo) &amp; Kruti Carsane (Principal PM, Pendo)</div>
+            <span class="rec-badge">⭐ Recommended for You</span>
+          </div>
+        </div>
+        <div class="breakout-option" id="d2s1b" onclick="selectBreakout('d2s1','b','Radically Rethinking Metrics: Why OKRs Backfire','10:30–11:15 AM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Radically Rethinking Metrics: Why Targets and OKRs Backfire</div>
+            <div class="option-desc">What actually works instead of goal-setting — Radhika Dutt, Radical Product Thinking</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d2s1c" onclick="selectBreakout('d2s1','c','Building a Strong Product Analytics Strategy for Cross-Functional Impact','10:30–11:15 AM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Building a Strong Product Analytics Strategy for Cross-Functional Impact</div>
+            <div class="option-desc">Unified analytics strategy &amp; key product metrics in a single pane of glass — Bluebeam / Nemetschek</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="breakout-section">
+        <h3>🔀 11:30 AM — Choose a Breakout</h3>
+        <div class="breakout-option recommended" id="d2s2a" onclick="selectBreakout('d2s2','a','How to Gain Traction with Pendo in a Complex Enterprise','11:30 AM–12:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">How to Gain Traction with Pendo in a Complex Enterprise</div>
+            <div class="option-desc">Turn a tool purchase into an enterprise movement — Corpay (Vice Presidents of Product)</div>
+            <span class="rec-badge">⭐ Recommended for You</span>
+          </div>
+        </div>
+        <div class="breakout-option" id="d2s2b" onclick="selectBreakout('d2s2','b','How Great Leaders Grow People','11:30 AM–12:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">How Great Leaders Grow People</div>
+            <div class="option-desc">Why coaching is one of the most powerful (and misunderstood) tools of effective product leadership</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d2s2c" onclick="selectBreakout('d2s2','c','How Virgin Airlines Australia Increased Bookings by 9%','11:30 AM–12:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">How Virgin Airlines Australia Increased Bookings by 9%</div>
+            <div class="option-desc">Using in-app channels to replace engineering bottlenecks with fast experimentation — Virgin Australia</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="time-block social">
+        <div class="time-label">12:15 PM</div>
+        <div class="time-info">
+          <div class="time-title">Lunch + Fireside Chat with OK Go!</div>
+          <div class="time-desc">Damian Kulash (Lead singer &amp; guitarist @ OK Go) in conversation with Pendo's VP Corporate Marketing</div>
+          <span class="time-tag tag-social">⭐ Don't Miss</span>
+        </div>
+      </div>
+
+      <div class="breakout-section">
+        <h3>🔀 1:30 PM — Choose a Breakout</h3>
+        <div class="breakout-option" id="d2s3a" onclick="selectBreakout('d2s3','a','Lightning Round: Aligning Teams Around Data, Not Gut Feel','1:30–2:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Lightning Round: Aligning Teams Around Data, Not Gut Feel</div>
+            <div class="option-desc">Making product decisions with confidence — Medidata, Blueprint Health, Dealpath</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d2s3b" onclick="selectBreakout('d2s3','b','Lightning Round: Making Product Insights Actionable at Scale','1:30–2:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Lightning Round: Making Product Insights Actionable at Scale</div>
+            <div class="option-desc">Scaling product insights while keeping them action-oriented — McGraw Hill, Korn Ferry</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d2s3c" onclick="selectBreakout('d2s3','c','The How/Why Ladder: Turning Product Features into Messaging','1:30–2:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">The How/Why Ladder: Turning Features into Messaging That Resonates</div>
+            <div class="option-desc">Framework for messaging that connects with your whole buying committee — QSC</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="breakout-section">
+        <h3>🔀 2:30 PM — Choose a Breakout</h3>
+        <div class="breakout-option" id="d2s4a" onclick="selectBreakout('d2s4','a','Lightning Round: Proving the Value of Customer Success','2:30–3:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Lightning Round: Proving the Value of Customer Success</div>
+            <div class="option-desc">The power of data in customer success — Cognosos, Litera, ShareFile Progress</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d2s4b" onclick="selectBreakout('d2s4','b','When Buy-In is the Product: Winning with Tech in Non-Tech Companies','2:30–3:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">When Buy-In is the Product: Winning with Tech in Non-Tech Companies</div>
+            <div class="option-desc">Evangelizing tech initiatives inside non-tech orgs — Zoia Kozakov, Head of Digital Product &amp; Strategy</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d2s4c" onclick="selectBreakout('d2s4','c','Lightning Round: Lean Adoption Playbooks That Deliver Big Results','2:30–3:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Lightning Round: Lean Adoption Playbooks That Deliver Big Results</div>
+            <div class="option-desc">Increase adoption without scaling drastically — SiteCompli, Linxup, Nasdaq</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="time-block ej">
+        <div class="time-label">3:20 PM</div>
+        <div class="time-info">
+          <div class="time-title">🤝 EJ &amp; Pendo: Executive Business Conference Meeting</div>
+          <div class="time-desc" style="line-height:1.8;">
+            <strong>Pendo Attendees:</strong> Brian Walsh (SVP Product, GM Engage) · Emily Miller (Sr. Sales Engineer) · Kruti Carsane (Portfolio PM, AI Agent Analytics) · Your Pendo Account Team<br>
+            <strong>Topic:</strong> AI Agents &amp; 3rd Party Desktop Apps (Microsoft Teams)<br>
+            <strong>Location:</strong> <a href="https://google.com/maps?rlz=1C5GCCM_en&um=1&ie=UTF-8&fb=1&gl=us&sa=X&geocode=KWNdNcmQWKyJMRIhoqE96dW6&daddr=2+E+South+St,+Raleigh,+NC+27601" target="_blank">EBC Room 3, Martin Marietta Center for the Performing Arts, 2 E South St, Raleigh, NC 27601 ↗</a><br>
+            <span style="background:rgba(0,87,60,0.08);border-radius:6px;padding:4px 8px;display:inline-block;margin-top:4px;font-size:12px;">📍 EBCs are outside Fletcher Stage, at the end of Community Hall on the east side of the building. Check in at the desk and someone will escort you to your assigned room.</span>
+          </div>
+          <span class="time-tag tag-ej">Your EBC · 3:20–3:50 PM</span>
+        </div>
+      </div>
+
+      <div class="breakout-section">
+        <h3>🔀 3:30 PM — Choose a Breakout (before/after your EBC)</h3>
+        <div class="breakout-option recommended" id="d2s5a" onclick="selectBreakout('d2s5','a','Lightning Round: How Modern Teams Scale and Make Changes Stick','3:30–4:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Lightning Round: How Modern Teams Scale and Make Changes Stick</div>
+            <div class="option-desc">Leverage data and ensure team buy-in — Fusable, Applied Systems, Waystar</div>
+            <span class="rec-badge">⭐ Recommended for You</span>
+          </div>
+        </div>
+        <div class="breakout-option" id="d2s5b" onclick="selectBreakout('d2s5','b','What Product Leaders Must Rethink in the AI Era','3:30–4:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">What Product Leaders Must Rethink in the AI Era</div>
+            <div class="option-desc">Core mindset required to lead in a world where products learn and adapt — Sierra</div>
+          </div>
+        </div>
+        <div class="breakout-option" id="d2s5c" onclick="selectBreakout('d2s5','c','Lightning Round: Using Behavioral Data to Understand Users','3:30–4:15 PM','Thu 3/26')">
+          <div class="option-radio"></div>
+          <div>
+            <div class="option-title">Lightning Round: Using Behavioral Data to Understand Users</div>
+            <div class="option-desc">UX research without interviews, digital adoption in legacy industries — Energy Exemplar, Braskem, Zoetis</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="time-block keynote">
+        <div class="time-label">4:30 PM</div>
+        <div class="time-info">
+          <div class="time-title">Closing Keynote</div>
+          <div class="time-desc">Details coming soon!</div>
+          <span class="time-tag tag-keynote">Keynote</span>
+        </div>
+      </div>
+      <div class="time-block social">
+        <div class="time-label">5:30 PM</div>
+        <div class="time-info">
+          <div class="time-title">🎸 Pendopalooza + After Party</div>
+          <div class="time-desc">OK Go performing LIVE! Get ready for amazing tunes and confetti — runs until 10:30 PM</div>
+          <span class="time-tag tag-social">🎉 Grand Finale!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MY AGENDA -->
+  <div id="section-my-agenda" class="section">
+    <div class="section-title">⭐ My Personalized Agenda</div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:12px;">Your personalized agenda includes all main events plus the breakout sessions you've selected on the Full Agenda tab. <strong>EJ-specific items are pre-populated.</strong></p>
+    <div style="background:#FEF3C7;border-radius:12px;padding:14px;margin-bottom:20px;border:1px solid #FDE68A;">
+      <p style="font-size:13px;color:#92400E;font-weight:600;">💡 Tip: Go to the Full Agenda tab and pick your preferred breakout sessions — they'll appear here automatically!</p>
+    </div>
+
+    <div id="my-agenda-content">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+
+  <!-- RECOMMENDED SESSIONS -->
+  <div id="section-recommended" class="section">
+    <div class="section-title">🎯 Pendo-Recommended Sessions for Edward Jones</div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:20px;">Based on your priorities around AI adoption, enterprise scale, and product analytics, here are the sessions we think are most valuable for your team.</p>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon pink">📅</div>
+        <h2>Tuesday, March 24</h2>
+      </div>
+      <div class="rec-session">
+        <h4>10:30–11:00 AM: Scaling Pendo: Governance, Adoption, and Measurable Impact</h4>
+        <p>UserTesting leaders share how they scaled Pendo across the org — overcoming internal challenges, formalizing a center of excellence, and driving consistent in-app experiences. Highly relevant for complex enterprise rollouts.</p>
+        <a href="https://www.pendo.io/pendomonium/usertesting-panel/" target="_blank">→ View session details</a>
+      </div>
+      <div class="rec-session">
+        <h4>1:30–2:30 PM: Connect with Product &amp; Community</h4>
+        <p>Visit the Product Experience Zone and Community Hall. Great opportunity for direct conversations with Pendo product leaders.</p>
+        <a href="https://www.pendo.io/pendomonium/Connect-with-Product-Community/" target="_blank">→ View session details</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon teal">📅</div>
+        <h2>Wednesday, March 25</h2>
+      </div>
+      <div class="rec-session">
+        <h4>9:00–11:00 AM: Opening Keynote — Built by You, Powered by Pendo ⭐</h4>
+        <p>Don't miss this! Non-attendees can even join virtually. CEO Todd Olson unveils Pendo's vision and product roadmap — critical context for your partnership.</p>
+        <a href="https://www.pendo.io/pendomonium/opening-pendo-keynote/" target="_blank">→ View session details</a>
+      </div>
+      <div class="rec-session">
+        <h4>2:00–2:45 PM: From Foundations to Dynamism — Preparing for Agent-First Experiences</h4>
+        <p>IQVIA's journey to building the operational muscle for AI agent-first experiences across a global, regulated enterprise. Very applicable to EJ's context.</p>
+        <a href="https://www.pendo.io/pendomonium/preparing-your-product-team-agent-based-user-experiences/" target="_blank">→ View session details</a>
+      </div>
+      <div class="rec-session">
+        <h4>4:00–5:00 PM: MCP — The Connective Tissue Behind a New Generation of Builders</h4>
+        <p>Panel of experts from ThoughtSpot, Miro, Atlassian, and Pendo discussing how PMs can prototype with MCP and make a new way of building possible.</p>
+        <a href="https://www.pendo.io/pendomonium/mcp-the-connective-tissue-behind-a-new-generation-of-builders/" target="_blank">→ View session details</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon blue">📅</div>
+        <h2>Thursday, March 26</h2>
+      </div>
+      <div class="rec-session">
+        <h4>10:30–11:15 AM: Measuring the Performance and Impact of AI Agents, at Scale ⭐</h4>
+        <p>Directly tied to your EBC meeting topics! Brian Walsh (SVP Product @ Pendo) and Kruti Carsane (Principal PM @ Pendo) present — the same leaders you'll meet with at 3:20 PM!</p>
+        <a href="https://www.pendo.io/pendomonium/agent-analytics/" target="_blank">→ View session details</a>
+      </div>
+      <div class="rec-session">
+        <h4>11:30 AM–12:15 PM: How to Gain Traction with Pendo in a Complex Enterprise ⭐</h4>
+        <p>This session shows how to turn a tool purchase into an enterprise movement — extremely relevant for EJ's scale and complexity.</p>
+        <a href="https://www.pendo.io/pendomonium/driving-product-adoption-at-scale-how-to-gain-traction-in-a-complex-enterprise/" target="_blank">→ View session details</a>
+      </div>
+      <div class="rec-session">
+        <h4>3:30–4:15 PM: Lightning Round — How Modern Teams Scale and Make Changes Stick</h4>
+        <p>Leverage data to ensure your team is on board — featuring Applied Systems (a top Pendo customer similar to EJ's enterprise profile).</p>
+        <a href="https://www.pendo.io/pendomonium/lightning-round-building-a-data-centric-culture-that-sticks/" target="_blank">→ View session details</a>
+      </div>
+      <div style="background:rgba(0,87,60,0.06);border-radius:12px;padding:14px;margin-top:12px;border:1px solid rgba(0,87,60,0.15);">
+        <p style="font-size:13px;font-weight:700;color:var(--ej-green);">🤝 EBC Executive Meeting — Your Private Session</p>
+        <p style="font-size:13px;color:#374151;margin-top:4px;"><strong>Thursday, March 26 · 3:20–3:50 PM</strong><br>Edward Jones &amp; Pendo: Pendomonium EBC with Brian Walsh (SVP Product, GM Engage), Emily Miller (Senior Sales Engineer), and Kruti Carsane (Portfolio PM, AI Agent Analytics)</p>
+        <p style="font-size:13px;color:var(--gray);margin-top:4px;">Topic: AI Agents and 3rd Party Desktop Apps like Microsoft Teams</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EBC MEETING -->
+  <div id="section-ebc" class="section">
+    <div class="section-title">🤝 EBC Meeting — Edward Jones & Pendo</div>
+
+    <div style="background:linear-gradient(135deg,var(--ej-green),#007A50);border-radius:16px;padding:28px;color:white;margin-bottom:20px;">
+      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.2);border-radius:999px;padding:4px 14px;font-size:12px;font-weight:700;margin-bottom:12px;">🎯 Your Private Executive Session</div>
+      <h2 style="color:white;font-size:22px;font-weight:800;margin-bottom:4px;">Edward Jones & Pendo: Pendomonium EBC</h2>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:14px;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.9);">📅 <span>Thursday, March 26, 2026</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.9);">🕒 <span>3:20 PM – 3:50 PM ET</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.9);">📍 <a href="https://google.com/maps?rlz=1C5GCCM_en&um=1&ie=UTF-8&fb=1&gl=us&sa=X&geocode=KWNdNcmQWKyJMRIhoqE96dW6&daddr=2+E+South+St,+Raleigh,+NC+27601" target="_blank" style="color:rgba(255,255,255,0.9);text-decoration:underline;">EBC Room 3, Martin Marietta Center ↗</a></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon blue">💬</div>
+        <h2>Meeting Topic</h2>
+      </div>
+      <div style="background:rgba(27,31,94,0.05);border-radius:10px;padding:16px;border-left:4px solid var(--pendo-blue);">
+        <p style="font-size:16px;font-weight:700;color:var(--pendo-blue);">AI Agents &amp; 3rd Party Desktop Apps like Microsoft Teams</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon pink">👥</div>
+        <h2>Pendo Attendees</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;">
+        <div style="background:var(--light-gray);border-radius:12px;padding:16px;border:1px solid var(--border);">
+          <div style="font-size:14px;font-weight:700;color:var(--pendo-blue);">Brian Walsh</div>
+          <div style="font-size:12px;color:var(--gray);margin-top:2px;">SVP Product, GM Engage</div>
+        </div>
+        <div style="background:var(--light-gray);border-radius:12px;padding:16px;border:1px solid var(--border);">
+          <div style="font-size:14px;font-weight:700;color:var(--pendo-blue);">Emily Miller</div>
+          <div style="font-size:12px;color:var(--gray);margin-top:2px;">Senior Sales Engineer</div>
+        </div>
+        <div style="background:var(--light-gray);border-radius:12px;padding:16px;border:1px solid var(--border);">
+          <div style="font-size:14px;font-weight:700;color:var(--pendo-blue);">Kruti Carsane</div>
+          <div style="font-size:12px;color:var(--gray);margin-top:2px;">Portfolio PM, AI Agent Analytics</div>
+        </div>
+        <div style="background:var(--light-gray);border-radius:12px;padding:16px;border:1px solid var(--border);">
+          <div style="font-size:14px;font-weight:700;color:var(--pendo-blue);">Your Pendo Account Team</div>
+          <div style="font-size:12px;color:var(--gray);margin-top:2px;">Vaughn · Cassie · Lauren · Caitlin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon teal">📍</div>
+        <h2>Location & Directions</h2>
+      </div>
+      <div class="info-row"><span class="label">Room</span><span class="val"><strong>EBC Room 3</strong></span></div>
+      <div class="info-row"><span class="label">Venue</span><span class="val"><a href="https://google.com/maps?rlz=1C5GCCM_en&um=1&ie=UTF-8&fb=1&gl=us&sa=X&geocode=KWNdNcmQWKyJMRIhoqE96dW6&daddr=2+E+South+St,+Raleigh,+NC+27601" target="_blank">Martin Marietta Center for the Performing Arts ↗</a></span></div>
+      <div class="info-row"><span class="label">Address</span><span class="val">2 E South St, Raleigh, NC 27601</span></div>
+      <div class="divider"></div>
+      <div style="background:#FEF3C7;border-radius:10px;padding:14px;border:1px solid #FDE68A;">
+        <p style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:6px;">🗺️ How to Find the EBC Rooms</p>
+        <p style="font-size:13px;color:#374151;line-height:1.6;">EBCs are located <strong>outside of Fletcher Stage</strong>, at the end of <strong>Community Hall</strong> on the <strong>east side of the building</strong>. Look for the <strong>EBC check-in desk</strong> — a staff member will greet you and escort you directly to EBC Room 3. Plan to arrive a few minutes early!</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon gold">💡</div>
+        <h2>Tips to Prepare</h2>
+      </div>
+      <ul>
+        <li>🎤 The session just before your EBC — <strong>10:30–11:15 AM: Measuring the Performance and Impact of AI Agents, at Scale</strong> — features Brian Walsh and Kruti Carsane. Attending that session first is a great way to get context ahead of your meeting!</li>
+        <li>📝 Come prepared with specific questions or use cases around AI Agents and MS Teams integrations</li>
+        <li>⏰ Arrive at the EBC check-in desk <strong>5 minutes early</strong> so staff can escort you to the room</li>
+        <li>📍 Community Hall is on the <strong>east side</strong> of the building — use the event app map to navigate</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- LOGISTICS -->
+  <div id="section-logistics" class="section">
+    <div class="section-title">🚗 Travel Logistics</div>
+
+    <div class="route-card">
+      <h3 style="font-size:16px;font-weight:700;color:var(--pendo-blue);margin-bottom:16px;">✈️ RDU Airport → Hotel</h3>
+      <div class="time-block" style="margin-bottom:8px;">
+        <div class="time-label">📍 From</div>
+        <div class="time-info"><div class="time-title">Raleigh-Durham International Airport (RDU)</div><div class="time-desc">2400 John Brantley Blvd, Morrisville, NC 27560</div></div>
+      </div>
+      <div class="time-block" style="margin-bottom:8px;">
+        <div class="time-label">🏨 To</div>
+        <div class="time-info"><div class="time-title">Raleigh Marriott City Center</div><div class="time-desc">500 Fayetteville St, Raleigh, NC 27601</div></div>
+      </div>
+      <div class="divider"></div>
+      <h4 style="font-size:14px;font-weight:700;color:var(--pendo-blue);margin-bottom:10px;">Your Options (~20–25 min drive)</h4>
+      <ul>
+        <li><strong>🚕 Uber / Lyft</strong> — Most convenient. Download apps in advance. Typical fare: $25–40. Pick up from Ground Transportation area.</li>
+        <li><strong>🚖 Taxi</strong> — Available curbside at baggage claim. Triangle Taxi: (919) 828-3228. Fare ~$35–45.</li>
+        <li><strong>🚌 GoTriangle Bus 100</strong> — Most affordable (~$2.25). Runs every 30 min, connects RDU to downtown Raleigh. ~45–55 min total. Great if you have light luggage!</li>
+        <li><strong>🚗 Rental Car</strong> — Available in the RDU Rental Car Center. Note: downtown Raleigh has limited/pricey parking.</li>
+      </ul>
+      <p style="font-size:12px;color:var(--gray);margin-top:10px;">💡 <strong>Pro tip:</strong> Use Uber/Lyft for easiest experience. Make sure your app is logged in before you land!</p>
+    </div>
+
+    <div class="route-card">
+      <h3 style="font-size:16px;font-weight:700;color:var(--pendo-blue);margin-bottom:16px;">🚶 Hotel → Conference Venue</h3>
+      <div class="time-block" style="margin-bottom:8px;">
+        <div class="time-label">🏨 From</div>
+        <div class="time-info"><div class="time-title">Raleigh Marriott City Center</div><div class="time-desc">500 Fayetteville St, Raleigh, NC 27601</div></div>
+      </div>
+      <div class="time-block" style="margin-bottom:8px;">
+        <div class="time-label">📍 To</div>
+        <div class="time-info"><div class="time-title">Martin Marietta Center for the Performing Arts</div><div class="time-desc">2 East South Street, Raleigh, NC 27601</div></div>
+      </div>
+      <div class="divider"></div>
+      <div style="background:rgba(0,194,199,0.08);border-radius:10px;padding:14px;border:1px solid rgba(0,194,199,0.2);">
+        <p style="font-size:14px;font-weight:700;color:#007A7D;">🚶 ~5-Minute Walk — It's that easy!</p>
+        <p style="font-size:13px;color:#374151;margin-top:4px;">Head south on Fayetteville Street toward South Street. The performing arts center is right there. No car needed!</p>
+      </div>
+      <p style="font-size:12px;color:var(--gray);margin-top:10px;">⚠️ <strong>Venue Note:</strong> The Martin Marietta Center is half indoor, half outdoor — wear comfortable walking shoes and layers!</p>
+    </div>
+
+    <div class="route-card">
+      <h3 style="font-size:16px;font-weight:700;color:var(--pendo-blue);margin-bottom:16px;">✈️ Departure — Hotel → RDU</h3>
+      <div style="background:rgba(255,184,0,0.1);border-radius:10px;padding:14px;border:1px solid rgba(255,184,0,0.3);">
+        <p style="font-size:14px;font-weight:700;color:#856500;">⏰ Friday, March 27 · 6:00 AM Flight</p>
+        <p style="font-size:13px;color:#374151;margin-top:6px;">We strongly recommend:</p>
+        <ul style="font-size:13px;color:#374151;padding-left:16px;margin-top:6px;">
+          <li>Leave hotel by <strong>4:00–4:15 AM</strong> at the latest</li>
+          <li>Book your Uber/Lyft the night before (scheduled rides available!)</li>
+          <li>Check in online the night before to save time</li>
+          <li>TSA PreCheck lanes typically open by 4:30 AM</li>
+          <li>Allow extra time — Thursday night is the big Pendopalooza party! 🎸</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- KNOW BEFORE YOU GO -->
+  <div id="section-kbyg" class="section">
+    <div class="section-title">📋 Know Before You Go</div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:20px;">Everything you need to know to hit the ground running at Pendomonium 2026.</p>
+    <div style="margin-bottom:16px;">
+      <a href="https://pendomonium-guide.lovable.app/" target="_blank" class="btn btn-primary">🔗 Full Know Before You Go Guide</a>
+    </div>
+
+    <div class="kbyg-grid">
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">📋</div>
+        <div class="kbyg-title">Registration</div>
+        <div class="kbyg-text">Check in at the Registration desk when you arrive. Have your confirmation email ready. Badges must be worn at all times on event days.</div>
+      </div>
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">🏛️</div>
+        <div class="kbyg-title">Venue Layout</div>
+        <div class="kbyg-text">Martin Marietta Center is half indoor, half outdoor. Sessions span multiple spaces — use the event app map to navigate between rooms.</div>
+      </div>
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">👟</div>
+        <div class="kbyg-title">What to Wear</div>
+        <div class="kbyg-text">Business casual recommended. Comfortable shoes are a MUST — you'll be walking between indoor and outdoor spaces all day. Pack layers!</div>
+      </div>
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">📱</div>
+        <div class="kbyg-title">Event App</div>
+        <div class="kbyg-text">Download before you arrive! The app has the full schedule, maps, speaker details, and push notifications for any schedule changes.</div>
+      </div>
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">🍽️</div>
+        <div class="kbyg-title">Food &amp; Drinks</div>
+        <div class="kbyg-text">Breakfast, lunch, and snacks are provided on event days. Dietary needs? Flag them in your registration. See the 🍽️ Food Menus tab for details.</div>
+      </div>
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">💻</div>
+        <div class="kbyg-title">WiFi</div>
+        <div class="kbyg-text">Conference WiFi will be available throughout the venue. Credentials shared in the event app and on signage at check-in.</div>
+      </div>
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">📸</div>
+        <div class="kbyg-title">Photography</div>
+        <div class="kbyg-text">Photos and videos may be taken throughout the event. By attending, you consent to being photographed for Pendo's marketing materials.</div>
+      </div>
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">🎤</div>
+        <div class="kbyg-title">Sessions</div>
+        <div class="kbyg-text">Sessions fill up! Arrive 10–15 minutes early for popular breakouts. Q&A is built into most sessions — questions via the event app.</div>
+      </div>
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">🌿</div>
+        <div class="kbyg-title">Sustainability</div>
+        <div class="kbyg-text">Pendo encourages eco-conscious choices. Reusable water stations are throughout the venue — bring or grab a reusable bottle!</div>
+      </div>
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">🚒</div>
+        <div class="kbyg-title">Emergency Info</div>
+        <div class="kbyg-text">Emergency exits are marked in the venue. First aid station near registration. Emergency: 911. Event staff in branded shirts throughout.</div>
+      </div>
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">♿</div>
+        <div class="kbyg-title">Accessibility</div>
+        <div class="kbyg-text">The venue is ADA accessible. Contact the registration desk for any accommodations needed. Reserved seating available for keynotes.</div>
+      </div>
+      <div class="kbyg-item">
+        <div class="kbyg-emoji">🎁</div>
+        <div class="kbyg-title">Swag &amp; Merch</div>
+        <div class="kbyg-text">Check out the Pendo merch booth! Your badge may include swag — look for your conference bag at check-in with goodies inside.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE RALEIGH -->
+  <div id="section-raleigh" class="section">
+    <div class="section-title">🏙️ Explore Raleigh — You've Got Extra Time!</div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:20px;">You're arriving Sunday 3/22 and Monday 3/23 — enjoy the City of Oaks before the conference kicks off! Here are some of our favorite picks.</p>
+
+    <div class="explore-grid">
+      <div class="explore-card">
+        <div class="explore-emoji">⛳</div>
+        <div class="explore-title">Golf Courses</div>
+        <ul class="explore-items">
+          <li>Lonnie Poole Golf Course — Arnold Palmer design, NC State campus, great skyline views (Public, ~$85 weekend)</li>
+          <li>Duke University Golf Club — One of the Southeast's best public courses, Durham (34 min)</li>
+          <li>Heritage Golf Course — Wake Forest, semi-private gem, great practice facility ($78 weekend)</li>
+          <li>Pine Hollow Golf Club — Best value in the area, Clayton (~20 min)</li>
+          <li>Drive Shack / TriGolf — New 28-bay driving range with Top Tracer tech!</li>
+        </ul>
+      </div>
+      <div class="explore-card">
+        <div class="explore-emoji">🍽️</div>
+        <div class="explore-title">Top Restaurants</div>
+        <ul class="explore-items">
+          <li>Bida Manda — Acclaimed Laotian cuisine, cozy &amp; welcoming</li>
+          <li>STIR — Craft cocktails + fresh oysters, downtown gem</li>
+          <li>Sam Jones BBQ — Authentic whole-hog Eastern NC BBQ, Warehouse District</li>
+          <li>Vidrio — Mediterranean small plates, great for groups, skyline views</li>
+          <li>Vivace — Italian patio dining, tagliatelle bolognese is a must</li>
+          <li>Capital Grille — Upscale steakhouse, classic &amp; reliable</li>
+          <li>Tupelo Honey — Southern comfort, scratch-made, great brunch</li>
+        </ul>
+      </div>
+      <div class="explore-card">
+        <div class="explore-emoji">🍺</div>
+        <div class="explore-title">Bars &amp; Drinks</div>
+        <ul class="explore-items">
+          <li>Glenwood South District — Bar-hopping central, tons of options</li>
+          <li>Raleigh Brewing Company — Local fave, great craft beers</li>
+          <li>Foxcroft Wine Co. — Excellent wine bar in North Hills</li>
+          <li>Whiskey Kitchen — Great whiskey selection, lively atmosphere</li>
+          <li>Transfer Co. Food Hall — Multiple bars + restaurants under one roof</li>
+          <li>The Roof at the Marriott City Center — Right at your hotel!</li>
+        </ul>
+      </div>
+      <div class="explore-card">
+        <div class="explore-emoji">🛍️</div>
+        <div class="explore-title">Shopping</div>
+        <ul class="explore-items">
+          <li>North Hills — Premier outdoor shopping destination, RH, restaurants</li>
+          <li>Village District — Boutiques, local shops, cafes</li>
+          <li>Crabtree Valley Mall — Major mall, 15 min from downtown</li>
+          <li>NC State Farmers Market — Fresh produce, local goods, weekend mornings</li>
+          <li>Downtown Raleigh City Market — Local artisan shops &amp; galleries</li>
+        </ul>
+      </div>
+      <div class="explore-card">
+        <div class="explore-emoji">🎨</div>
+        <div class="explore-title">Arts &amp; Culture</div>
+        <ul class="explore-items">
+          <li>NC Museum of Art — Free! One of the South's best. Great sculpture park.</li>
+          <li>NC Museum of Natural Sciences — Free! Perfect rainy day activity</li>
+          <li>NC Museum of History — Free! Including NC Sports Hall of Fame</li>
+          <li>Art in Bloom @ NCMA (3/18–3/22) — Stunning floral art pairings — catch it before it ends!</li>
+          <li>NC State Capitol — Walk the historic grounds right downtown</li>
+        </ul>
+      </div>
+      <div class="explore-card">
+        <div class="explore-emoji">🌿</div>
+        <div class="explore-title">Outdoors &amp; Activities</div>
+        <ul class="explore-items">
+          <li>Umstead State Park — 5,500 acres, hiking, biking, scenic lakes</li>
+          <li>Dorothea Dix Park — Beautiful greenspace with downtown skyline views</li>
+          <li>Pullen Park — Historic park, paddleboats, fun for all</li>
+          <li>Neuse River Trail — Paved trail, great for morning runs or bike rides</li>
+          <li>JC Raulston Arboretum — Beautiful spring gardens, free admission</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:8px;">
+      <div class="card-header">
+        <div class="card-icon gold">☕</div>
+        <h2>Best Coffee Spots</h2>
+      </div>
+      <ul>
+        <li><strong>Jubala Coffee</strong> — Raleigh institution, excellent espresso drinks</li>
+        <li><strong>Little Native Coffee Co.</strong> — Unique downtown coffee shop (home to the secret Littlest Tea Room!)</li>
+        <li><strong>Sola Coffee Cafe</strong> — Neighborhood gem, great for working</li>
+        <li><strong>Transfer Co. Food Hall</strong> — Multiple coffee options in one place</li>
+      </ul>
+      <p style="font-size:13px;color:var(--gray);margin-top:8px;">☕ Want to grab coffee with your Pendo account team? Just reach out — we'd love to start the week together before things get busy!</p>
+    </div>
+  </div>
+
+  <!-- FOOD MENUS -->
+  <div id="section-food" class="section">
+    <div class="section-title">🍽️ Munchomonium — Event Food Menus</div>
+    <p style="font-size:14px;color:var(--gray);margin-bottom:20px;">Here's a preview of the dining experience at Pendomonium. Full interactive menus available at the link below.</p>
+    <div style="margin-bottom:20px;">
+      <a href="https://munchomonium.lovable.app/" target="_blank" class="btn btn-primary">🔗 View Full Interactive Menu</a>
+    </div>
+
+    <div class="menu-day">
+      <div class="card-header" style="margin-bottom:16px;">
+        <div class="card-icon blue">📅</div>
+        <h2>Wednesday, March 25 — Day 1</h2>
+      </div>
+      <div class="menu-meal">
+        <div class="menu-meal-header">
+          <span style="font-size:20px">🌅</span>
+          <span class="meal-type" style="color:var(--pendo-gold);">Breakfast (7:00–9:00 AM)</span>
+        </div>
+        <div class="menu-item"><span class="menu-item-name">Assorted pastries, muffins &amp; croissants</span><span class="diet-badge vg">VG</span></div>
+        <div class="menu-item"><span class="menu-item-name">Fresh seasonal fruit display</span><span class="diet-badge vegan">🌱 Vegan</span></div>
+        <div class="menu-item"><span class="menu-item-name">Yogurt parfait station with granola &amp; berries</span><span class="diet-badge gf">GF</span></div>
+        <div class="menu-item"><span class="menu-item-name">Scrambled eggs &amp; breakfast potatoes</span><span class="diet-badge gf">GF</span></div>
+        <div class="menu-item"><span class="menu-item-name">Bacon &amp; chicken sausage</span></div>
+        <div class="menu-item"><span class="menu-item-name">Coffee, tea &amp; fresh-squeezed orange juice</span></div>
+      </div>
+      <div class="menu-meal">
+        <div class="menu-meal-header">
+          <span style="font-size:20px">☀️</span>
+          <span class="meal-type" style="color:var(--pendo-teal);">Lunch (11:00 AM–1:00 PM)</span>
+        </div>
+        <div class="menu-item"><span class="menu-item-name">Build-your-own grain bowl station</span><span class="diet-badge vegan">🌱 Vegan</span></div>
+        <div class="menu-item"><span class="menu-item-name">Carved protein station: rotisserie chicken &amp; beef</span><span class="diet-badge gf">GF</span></div>
+        <div class="menu-item"><span class="menu-item-name">Roasted seasonal vegetables</span><span class="diet-badge vegan">🌱 Vegan</span></div>
+        <div class="menu-item"><span class="menu-item-name">Fresh salad bar with local NC toppings</span></div>
+        <div class="menu-item"><span class="menu-item-name">Artisan bread &amp; rolls</span></div>
+        <div class="menu-item"><span class="menu-item-name">Dessert: Brownies, cookies &amp; seasonal fruit tarts</span></div>
+      </div>
+      <div class="menu-meal">
+        <div class="menu-meal-header">
+          <span style="font-size:20px">🔥</span>
+          <span class="meal-type" style="color:var(--pendo-pink);">BBQ &amp; Beats Dinner (5:30–8:30 PM)</span>
+        </div>
+        <div class="menu-item"><span class="menu-item-name">Authentic NC wood-smoked pulled pork BBQ</span><span class="diet-badge gf">GF</span></div>
+        <div class="menu-item"><span class="menu-item-name">Smoked chicken quarters with vinegar sauce</span><span class="diet-badge gf">GF</span></div>
+        <div class="menu-item"><span class="menu-item-name">Classic sides: coleslaw, baked beans, cornbread</span></div>
+        <div class="menu-item"><span class="menu-item-name">Vegan BBQ jackfruit option</span><span class="diet-badge vegan">🌱 Vegan</span></div>
+        <div class="menu-item"><span class="menu-item-name">Full bar with local NC craft beers, wine &amp; cocktails</span></div>
+        <div class="menu-item"><span class="menu-item-name">Live music by Gangstagrass &amp; Fireside Collective 🎸</span></div>
+      </div>
+    </div>
+
+    <div class="menu-day">
+      <div class="card-header" style="margin-bottom:16px;">
+        <div class="card-icon teal">📅</div>
+        <h2>Thursday, March 26 — Day 2</h2>
+      </div>
+      <div class="menu-meal">
+        <div class="menu-meal-header">
+          <span style="font-size:20px">🌅</span>
+          <span class="meal-type" style="color:var(--pendo-gold);">Breakfast (7:00–9:00 AM)</span>
+        </div>
+        <div class="menu-item"><span class="menu-item-name">Hot breakfast sandwich station (egg, cheese, choice of protein)</span></div>
+        <div class="menu-item"><span class="menu-item-name">Overnight oats bar with toppings</span><span class="diet-badge vg">VG</span></div>
+        <div class="menu-item"><span class="menu-item-name">Seasonal smoothie station</span><span class="diet-badge vegan">🌱 Vegan</span></div>
+        <div class="menu-item"><span class="menu-item-name">Assorted pastries &amp; fresh fruit</span></div>
+        <div class="menu-item"><span class="menu-item-name">Coffee, espresso bar &amp; juice</span></div>
+      </div>
+      <div class="menu-meal">
+        <div class="menu-meal-header">
+          <span style="font-size:20px">☀️</span>
+          <span class="meal-type" style="color:var(--pendo-teal);">Lunch (12:15–1:30 PM)</span>
+        </div>
+        <div class="menu-item"><span class="menu-item-name">Seated lunch with fireside chat featuring OK Go's Damian Kulash 🎤</span></div>
+        <div class="menu-item"><span class="menu-item-name">Plated entrée: Choice of chicken piccata or vegetarian pasta</span><span class="diet-badge vg">VG opt.</span></div>
+        <div class="menu-item"><span class="menu-item-name">Soup: Roasted tomato bisque</span><span class="diet-badge vg">VG</span></div>
+        <div class="menu-item"><span class="menu-item-name">Caesar salad &amp; garlic bread</span></div>
+        <div class="menu-item"><span class="menu-item-name">Dessert: Cheesecake with berry compote</span></div>
+        <div class="menu-item"><span class="menu-item-name">Wine, beer &amp; non-alcoholic options available</span></div>
+      </div>
+      <div class="menu-meal">
+        <div class="menu-meal-header">
+          <span style="font-size:20px">🎸</span>
+          <span class="meal-type" style="color:var(--pendo-pink);">Pendopalooza After Party (5:30–10:30 PM)</span>
+        </div>
+        <div class="menu-item"><span class="menu-item-name">Food stations: Tacos, sliders, flatbreads, &amp; snacks</span></div>
+        <div class="menu-item"><span class="menu-item-name">Dessert bar: Mini desserts &amp; late-night bites</span></div>
+        <div class="menu-item"><span class="menu-item-name">Full open bar: Cocktails, beer, wine &amp; mocktails</span></div>
+        <div class="menu-item"><span class="menu-item-name">OK Go performing LIVE + confetti! 🎉</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p style="font-size:13px;color:var(--gray);">🌱 Dietary Badges: <span class="diet-badge gf">GF</span> = Gluten Free &nbsp; <span class="diet-badge vg">VG</span> = Vegetarian &nbsp; <span class="diet-badge vegan">🌱 Vegan</span> = Vegan &nbsp;&nbsp; For specific dietary needs or allergies, speak with a catering staff member at any food station. See the <a href="https://munchomonium.lovable.app/" target="_blank">full menu site</a> for complete details.</p>
+    </div>
+  </div>
+
+  <!-- WEATHER -->
+  <div id="section-weather" class="section">
+    <div class="section-title">🌤️ Raleigh Weather Forecast</div>
+
+    <div class="card" style="background:linear-gradient(135deg,#1B1F5E,#2D3494);color:white;border:none;">
+      <h2 style="color:white;margin-bottom:6px;">⚠️ North Carolina Spring Weather Heads-Up</h2>
+      <p style="color:rgba(255,255,255,0.8);font-size:14px;">NC spring weather is famously unpredictable — you can experience all four seasons in the same week! Temperatures can swing from 40°F lows to 80°F highs. Come prepared.</p>
+    </div>
+
+    <div style="margin-bottom:8px;"><strong style="font-size:14px;color:var(--pendo-blue);">📅 Your Trip Forecast (March 22–27)</strong></div>
+    <div class="weather-grid">
+      <div class="weather-day">
+        <div class="weather-date">Sun 3/22</div>
+        <div class="weather-icon">☀️</div>
+        <div class="weather-high">83°F</div>
+        <div class="weather-low">Low ~58°F</div>
+        <div class="weather-note">Arrival Day — Warm!</div>
+      </div>
+      <div class="weather-day">
+        <div class="weather-date">Mon 3/23</div>
+        <div class="weather-icon">🌤️</div>
+        <div class="weather-high">77°F</div>
+        <div class="weather-low">Low ~55°F</div>
+        <div class="weather-note">Explore Raleigh!</div>
+      </div>
+      <div class="weather-day">
+        <div class="weather-date">Tue 3/24</div>
+        <div class="weather-icon">⛅</div>
+        <div class="weather-high">56°F</div>
+        <div class="weather-low">Low ~43°F</div>
+        <div class="weather-note">Cooler — Layer up</div>
+      </div>
+      <div class="weather-day">
+        <div class="weather-date">Wed 3/25</div>
+        <div class="weather-icon">🌥️</div>
+        <div class="weather-high">65°F</div>
+        <div class="weather-low">Low ~46°F</div>
+        <div class="weather-note">Partly cloudy</div>
+      </div>
+      <div class="weather-day">
+        <div class="weather-date">Thu 3/26</div>
+        <div class="weather-icon">🌦️</div>
+        <div class="weather-high">70°F</div>
+        <div class="weather-low">Low ~50°F</div>
+        <div class="weather-note">Chance of rain</div>
+      </div>
+      <div class="weather-day">
+        <div class="weather-date">Fri 3/27</div>
+        <div class="weather-icon">🌤️</div>
+        <div class="weather-high">72°F</div>
+        <div class="weather-low">Low ~48°F</div>
+        <div class="weather-note">Departure Day</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon gold">🧳</div>
+        <h2>Packing Recommendations</h2>
+      </div>
+      <ul>
+        <li>🧥 <strong>Pack layers!</strong> Lows can dip to ~40°F, highs can reach ~80°F — you'll likely experience both in the same trip</li>
+        <li>☔ <strong>Bring a travel umbrella or light rain jacket</strong> — NC spring showers happen with little warning</li>
+        <li>👟 <strong>Wear comfortable walking shoes</strong> — the conference venue is half indoor, half outdoor. You'll be on your feet all day!</li>
+        <li>💊 <strong>Pack allergy medicine!</strong> Pollen counts in Raleigh can be very high in March — tree pollen especially. NC is known for its pollen season starting in early spring</li>
+        <li>🕶️ <strong>Sunglasses</strong> — sunny days can be bright, especially outdoors</li>
+        <li>💧 <strong>Reusable water bottle</strong> — hydration stations throughout the venue</li>
+        <li>🔋 <strong>Portable phone charger / power bank</strong> — long days on your feet with the event app open</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon teal">🤧</div>
+        <h2>Allergy Season Alert</h2>
+      </div>
+      <p>March is peak allergy season in Raleigh! Oak, birch, and cedar pollen can be extremely high. If you're sensitive to tree pollen, we <strong>strongly recommend</strong> packing your preferred antihistamine (Claritin, Zyrtec, Allegra, etc.) and eye drops. Taking an antihistamine the day before you arrive can help!</p>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<script>
+// NAVIGATION
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  const idx = ['welcome','app','team','exec','ebc','agenda','my-agenda','recommended','logistics','kbyg','raleigh','food','weather'].indexOf(id);
+  document.querySelectorAll('.nav-btn')[idx]?.classList.add('active');
+  if (id === 'my-agenda') renderMyAgenda();
+  window.scrollTo(0,0);
+}
+
+// DAY TABS
+function showDay(id) {
+  document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// BREAKOUT SELECTIONS
+var selections = {};
+
+function selectBreakout(slotId, optId, title, time, day) {
+  // Deselect others in same slot
+  document.querySelectorAll('[id^="' + slotId + '"]').forEach(el => {
+    el.classList.remove('selected');
+  });
+  var el = document.getElementById(slotId + optId);
+  if (el) {
+    el.classList.add('selected');
+    selections[slotId] = { title, time, day };
+  }
+}
+
+// PERSONALIZED AGENDA
+var fixedEvents = {
+  'Tue 3/24': [
+    { time: '6:00–9:00 PM', title: '⭐ Exec Welcome Reception at Pendo HQ', desc: 'Dinner · Drinks · Live Band · Executive Networking', type: 'special' },
+  ],
+  'Wed 3/25': [
+    { time: '7:00–9:00 AM', title: 'Breakfast & Networking', type: 'normal' },
+    { time: '9:00–11:00 AM', title: 'Opening Keynote: Built by You, Powered by Pendo', desc: 'Todd Olson, CEO @ Pendo', type: 'normal' },
+    { time: '11:00 AM–1:00 PM', title: 'Lunch & Networking', type: 'normal' },
+    { time: '4:00–5:00 PM', title: 'MCP: The Connective Tissue Behind a New Generation of Builders', type: 'normal' },
+    { time: '5:00–5:30 PM', title: 'Keynote: How Builder.io Builds', desc: 'Steve Sewell, Founder & CEO @ Builder.io', type: 'normal' },
+    { time: '5:30–8:30 PM', title: '🔥 BBQ & Beats', desc: 'NC BBQ + Gangstagrass & Fireside Collective live!', type: 'special' },
+  ],
+  'Thu 3/26': [
+    { time: '7:00–9:00 AM', title: 'Breakfast & Networking', type: 'normal' },
+    { time: '9:00–9:45 AM', title: 'Keynote: The Era of the Product Creator', desc: 'Christian Idiodi, Silicon Valley Product Group', type: 'normal' },
+    { time: '9:45–10:15 AM', title: 'Keynote: The Art and Science of Product Sense', desc: 'Vrushali Paunikar, CPO @ Carta', type: 'normal' },
+    { time: '12:15–1:30 PM', title: 'Lunch + Fireside Chat with OK Go!', desc: 'Damian Kulash in conversation', type: 'normal' },
+    { time: '3:20–3:50 PM', title: '🤝 EJ & Pendo: Executive Business Conference Meeting', desc: 'Pendo Attendees: Brian Walsh (SVP Product, GM Engage) · Emily Miller (Sr. Sales Engineer) · Kruti Carsane (Portfolio PM, AI Agent Analytics) · Your Pendo Account Team\nTopic: AI Agents & 3rd Party Desktop Apps (Microsoft Teams)\nLocation: EBC Room 3, Martin Marietta Center for the Performing Arts\n📍 EBCs are outside Fletcher Stage, at end of Community Hall (east side). Check in at the desk — someone will escort you to your room.', type: 'ej' },
+    { time: '4:30–5:30 PM', title: 'Closing Keynote', type: 'normal' },
+    { time: '5:30–10:30 PM', title: '🎸 Pendopalooza After Party — OK Go LIVE!', desc: 'Amazing tunes and confetti!', type: 'special' },
+  ]
+};
+
+function renderMyAgenda() {
+  var out = '';
+  var days = ['Tue 3/24', 'Wed 3/25', 'Thu 3/26'];
+  days.forEach(function(day) {
+    out += '<div class="agenda-day-header">' + day + '</div>';
+    var events = (fixedEvents[day] || []).slice();
+    // Insert breakout selections for this day
+    Object.values(selections).forEach(function(sel) {
+      if (sel.day === day) {
+        events.push({ time: sel.time, title: sel.title, type: 'breakout', isBreakout: true });
+      }
+    });
+    // Sort by time
+    events.sort(function(a,b) {
+      var ta = parseInt(a.time.replace(/[^0-9]/,''));
+      var tb = parseInt(b.time.replace(/[^0-9]/,''));
+      // handle PM
+      if (a.time.includes('PM') && !a.time.startsWith('12')) ta += 1200;
+      if (b.time.includes('PM') && !b.time.startsWith('12')) tb += 1200;
+      return ta - tb;
+    });
+    events.forEach(function(ev) {
+      var cls = 'agenda-item';
+      if (ev.type === 'special') cls += ' special';
+      else if (ev.type === 'ej') cls += ' ej';
+      else if (ev.isBreakout) cls += ' breakout';
+      out += '<div class="' + cls + '">';
+      out += '<div style="font-size:12px;font-weight:700;color:var(--gray);">' + ev.time + '</div>';
+      out += '<div style="font-size:14px;font-weight:600;color:var(--text);margin-top:2px;">' + ev.title + '</div>';
+      if (ev.desc) out += '<div style="font-size:12px;color:var(--gray);margin-top:3px;white-space:pre-line">' + ev.desc + '</div>';
+      if (ev.isBreakout) out += '<span class="time-tag tag-breakout" style="margin-top:4px;">Your Session Pick</span>';
+      if (ev.type === 'ej') out += '<span class="time-tag tag-ej" style="margin-top:4px;">EJ × Pendo EBC</span>';
+      if (ev.type === 'special') out += '<span class="time-tag tag-special" style="margin-top:4px;">Special Event</span>';
+      out += '</div>';
+    });
+  });
+  if (!Object.keys(selections).length) {
+    out += '';
+  }
+  document.getElementById('my-agenda-content').innerHTML = out;
+}
+
+// Init
+renderMyAgenda();
+</script>
+</body>
+</html>
